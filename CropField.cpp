@@ -47,5 +47,5 @@ double CropField::getEnergyConsumption()
 
 void CropField::harvestCrops()
 {
-    cout << "Harvesting crops from " << cropType << " field." << endl;
+    cout << "Harvesting:  " << cropType << " field." << endl;
 }
