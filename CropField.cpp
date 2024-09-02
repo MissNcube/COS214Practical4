@@ -1,4 +1,5 @@
 #include "CropField.h"
+#include "DrySoil.h"
 
 CropField::CropField(string cropType, int totalCapacity, string unitID, string location, double energyConsumption):FarmUnit("CropField",unitID, location, energyConsumption)
 {           
@@ -7,6 +8,7 @@ CropField::CropField(string cropType, int totalCapacity, string unitID, string l
             this->cropType = cropType;
             this->totalCapacity = totalCapacity;
             this->energyConsumption = energyConsumption;
+            this->soilState = new DrySoil();    //default state
 }
 
 int CropField::getTotalCapacity()
@@ -34,6 +36,7 @@ void CropField::updateSensorData(string sensor, double value)
      sensorData[sensor] = value;
 }
 
+
 double CropField::getSensorData(string sensor) const
 {
      auto it = sensorData.find(sensor);
@@ -45,7 +48,39 @@ double CropField::getEnergyConsumption()
     return this->energyConsumption;
 }
 
-void CropField::harvestCrops()
+void CropField::retrieveCrops()
 {
     cout << "Harvesting:  " << cropType << " field." << endl;
+}
+
+void CropField::setSoilState(SoilState *state)
+{
+    if(soilState)
+    {
+        delete soilState;
+    }
+    this->soilState = state;
+}
+
+string CropField::getSoilStateName()
+{
+    return soilState->getName();
+}
+
+void CropField::rain(CropField* field, double rainAmt)
+{
+    soilState->rain(field, rainAmt);
+}
+
+int CropField::harvestCrops(CropField* crop)
+{
+    std::cout << "Harvesting crops based on current soil state." << std::endl;
+    int yield = soilState->harvestCrops(crop);
+    //std::cout << "Yield: " << yield << " units of crops harvested." << std::endl;
+    return  yield;
+}
+
+void CropField::setTotalCapacity(int capacity)
+{
+    this->totalCapacity = capacity;
 }

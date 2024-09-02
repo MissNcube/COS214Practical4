@@ -99,13 +99,26 @@ void CompositeFarm::updateSensorData(string sensor, double value)
 }
 
 void CompositeFarm::addUnit(FarmUnit* unit)
- {
-    farmUnits.push_back(unit);
+{
+    if(unit)
+    {
+        farmUnits.push_back(unit);
+    }
+    else
+    {
+        return;
+    }
 }
 
 void CompositeFarm::removeUnit(FarmUnit* unit) 
 {
-    farmUnits.erase(remove(farmUnits.begin(), farmUnits.end(), unit), farmUnits.end());
+    if(unit){
+        farmUnits.erase(remove(farmUnits.begin(), farmUnits.end(), unit), farmUnits.end());
+    }
+    else 
+    {
+        return;
+    }
 }
 
 vector<FarmUnit*> CompositeFarm::getFarmUnits() const 
