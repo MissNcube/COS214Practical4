@@ -1,7 +1,9 @@
 #include "CropField.h"
 
 CropField::CropField(string cropType, int totalCapacity, string unitID, string location, double energyConsumption):FarmUnit("CropField",unitID, location, energyConsumption)
-{
+{           
+            this->unitID = unitID;
+            this->location = location;
             this->cropType = cropType;
             this->totalCapacity = totalCapacity;
             this->energyConsumption = energyConsumption;
@@ -35,7 +37,7 @@ void CropField::updateSensorData(string sensor, double value)
 double CropField::getSensorData(string sensor) const
 {
      auto it = sensorData.find(sensor);
-    return (it != sensorData.end()) ? it->second : -1; // Return -1 if sensor not found
+    return (it != sensorData.end()) ? it->second : -1; 
 }
 
 double CropField::getEnergyConsumption()

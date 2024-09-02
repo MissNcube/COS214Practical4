@@ -5,3 +5,9 @@ FarmUnit::FarmUnit(string unitType, string unitID, string location, double energ
     this->unitType = unitType;
 
 }
+
+FarmUnit::~FarmUnit()
+{
+}
+
+

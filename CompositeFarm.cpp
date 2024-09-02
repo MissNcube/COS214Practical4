@@ -1,101 +1,114 @@
 #include "CompositeFarm.h"
-#include <iostream>
 #include <algorithm>
 
-CompositeFarm::CompositeFarm(string unitID, string location, double energyConsumption) : FarmUnit("CompositeFarm", unitID, location, energyConsumption)
-{
-    // Initialize the farm unit's energy consumption
-    this->energyConsumption = energyConsumption;
-}
+CompositeFarm::CompositeFarm(string unitID, string location, double energyConsumption)
+    : FarmUnit("CompositeFarm", unitID, location, energyConsumption) {}
 
-
-CompositeFarm::~CompositeFarm()
+CompositeFarm::~CompositeFarm() 
 {
-    for (FarmUnit *unit : farmUnits)
-    {
-        delete unit; // Clean up memory
+    for (FarmUnit* unit : farmUnits) {
+        delete unit;
     }
 }
 
 int CompositeFarm::getTotalCapacity()
 {
     int total = 0;
-    for (const auto &unit : farmUnits)
-    {
-        total += unit->getTotalCapacity(); // Aggregate capacity
+    for (const auto& unit : farmUnits) {
+        total += unit->getTotalCapacity();
     }
     return total;
 }
 
-string CompositeFarm::getCropType()
+string CompositeFarm::getCropType() 
 {
-    // Return crop type based on the first crop field for simplicity
-    for (const auto &unit : farmUnits)
-    {
-        if (unit->getCropType() != "")
-        {
-            return unit->getCropType();
+     std::string combinedCropTypes;
+        for (auto unit : farmUnits) {
+            if (!combinedCropTypes.empty()) {
+                combinedCropTypes += ", ";
+            }
+            combinedCropTypes += unit->getCropType();
+        }
+        return combinedCropTypes;
+}
+
+// string CompositeFarm::getSoilStateName() {
+//     for (const auto& unit : farmUnits) {
+//         string soilState = unit->getSoilStateName();
+//         if (!soilState.empty()) {
+//             return soilState;
+//         }
+//     }
+//     return "No soil state found";
+// }
+
+double CompositeFarm::getEnergyConsumption() 
+{
+    double totalEnergy = this->energyConsumption;
+    for (const auto& unit : farmUnits) {
+        totalEnergy += unit->getEnergyConsumption();
+    }
+    return totalEnergy;
+}
+
+double CompositeFarm::getSensorData(string sensor) const 
+{
+    double totalValue = 0;
+    int sensorCount = 0;
+
+    for (const auto& unit : farmUnits) {
+        double sensorValue = unit->getSensorData(sensor);
+        if (sensorValue != -1) {
+            totalValue += sensorValue;
+            sensorCount++;
         }
     }
-    return "No crops found"; // Fallback
+
+    return sensorCount > 0 ? totalValue / sensorCount : -1;
 }
 
-string CompositeFarm::getSoilStateName()
+string CompositeFarm::getUnitID() 
 {
-    // Return soil state name based on the first crop field for simplicity
-    for (const  auto &unit : farmUnits)
-    {
-        if (unit->getSoilStateName() != "")
-        {
-            return unit->getSoilStateName();
+   std::string combinedUnitIDs;
+        for (auto unit : farmUnits) {
+            if (!combinedUnitIDs.empty()) {
+                combinedUnitIDs += ", ";
+            }
+            combinedUnitIDs += unit->getUnitID();
         }
+        return combinedUnitIDs;
+}
+
+string CompositeFarm::getLocation() 
+{
+    std::string combinedLocations;
+        for (auto unit : farmUnits) {
+            if (!combinedLocations.empty()) {
+                combinedLocations += ", ";
+            }
+            combinedLocations += unit->getLocation();
+        }
+        return combinedLocations;
+}
+
+void CompositeFarm::updateSensorData(string sensor, double value) 
+{
+    for (auto& unit : farmUnits) {
+        unit->updateSensorData(sensor, value);
     }
-    return "No soil state found"; // Fallback
 }
 
-double CompositeFarm::getSensorData(string sensor) const
-{
-     auto it = sensorData.find(sensor);
-    return (it != sensorData.end()) ? it->second : -1; // Return -1 if sensor not found
-}
-
-
-
-string CompositeFarm::getUnitID()
-{
-    return this->unitID;
-}
-
-string CompositeFarm::getLocation()
-{
-    return this->location;
-}
-
-
-void CompositeFarm::updateSensorData(string sensor, double value)
-{
-     sensorData[sensor] = value;
-}
-
-
-
-
-void CompositeFarm::addUnit(FarmUnit *unit)
-{
+void CompositeFarm::addUnit(FarmUnit* unit)
+ {
     farmUnits.push_back(unit);
 }
 
-void CompositeFarm::removeUnit(FarmUnit *unit)
+void CompositeFarm::removeUnit(FarmUnit* unit) 
 {
-    auto it =std::find(farmUnits.begin(), farmUnits.end(), unit);
-
-    if (it != farmUnits.end())
-    {
-        farmUnits.erase(it);
-    }
+    farmUnits.erase(remove(farmUnits.begin(), farmUnits.end(), unit), farmUnits.end());
 }
 
-vector<FarmUnit *> CompositeFarm::getFarmUnits() const
+vector<FarmUnit*> CompositeFarm::getFarmUnits() const 
 {
     return farmUnits;
 }
