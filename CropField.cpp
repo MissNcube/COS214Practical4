@@ -57,7 +57,7 @@ double CropField::getEnergyConsumption()
 
 void CropField::retrieveCrops()
 {
-    cout << "Harvesting crops from " << cropType << " field." << endl;
+    cout << "Harvesting:  " << cropType << " field." << endl;
 }
 
 void CropField::setSoilState(SoilState *state)
