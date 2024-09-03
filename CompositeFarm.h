@@ -20,6 +20,7 @@ public:
     string getUnitID() override;
     string getLocation() override;  
     double getSensorData(string sensor) const override;
+    int getYield() override;
     void updateSensorData(string sensor, double value) override;
     void addUnit(FarmUnit* unit);
     void removeUnit(FarmUnit* unit);

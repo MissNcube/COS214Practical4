@@ -6,9 +6,9 @@
 int FloodedSoil::harvestCrops(CropField *crop)
 {
     std::cout << "No yield due to flooded soil." << std::endl;
-   int  yield = crop->getTotalCapacity();
+   int  yield = crop->getYield();
    yield *= 0;
-    crop->setTotalCapacity(yield);
+    crop->setYield(yield);
     return yield;
     // return 0;  // No yield for flooded soil
 }

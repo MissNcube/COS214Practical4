@@ -26,9 +26,11 @@ public:
     virtual string getUnitID()  = 0;
     virtual string getLocation() = 0;
     virtual  double getSensorData(string sensor) const =0;
+    virtual int getYield() = 0;
     virtual double getEnergyConsumption() = 0;
     // Pure virtual methods for sensor data management
     virtual void updateSensorData(string sensor, double value) = 0; 
+
 };
 
 #endif 

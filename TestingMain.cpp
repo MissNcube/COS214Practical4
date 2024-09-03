@@ -3,21 +3,25 @@
 #include "CompositeFarm.h"
 #include "FarmUnit.h"
 #include "FloodedSoil.h"
+#include "Fertilizer.h"
+#include "ExtraBarn.h"
 
 void testComponent1();
 void testComponent2();
+void testComponent3();
 
 int main()
 {
     // testComponent1();
-    testComponent2();
+    //testComponent2();
+    testComponent3();
     return 0;
 }
 
 void testComponent1()
 {
      // Create some CropField instances
-    CropField* cornField = new CropField("Corn", 100, "CF001", "Field 1", 10.0);
+    CropField* cornField = new CropField("Corn", 100, "CF001", "Field 1", 10.0,20);
   std::cout<<"+++++++++++++++++++CORNFIELD DATA+++++++++++++++++++++"<<std::endl  
     <<cornField->getCropType()<<" "
     <<cornField->getTotalCapacity()<<" "
@@ -27,7 +31,7 @@ void testComponent1()
     <<std::endl;
 
 
-    CropField* wheatField = new CropField("Wheat", 150, "CF002", "Field 2", 15.0);
+    CropField* wheatField = new CropField("Wheat", 150, "CF002", "Field 2", 15.0,30);
     std::cout<<"+++++++++++++++++++WheatField DATA+++++++++++++++++++++"<<std::endl  
     <<wheatField->getCropType()<<" "
     <<wheatField->getTotalCapacity()<<" "
@@ -65,9 +69,9 @@ void testComponent1()
 void testComponent2()
 {
       // Create a CropField instance
-    CropField* wheatField = new CropField("Wheat", 100, "CF001", "North Field", 500.0);
+    CropField* wheatField = new CropField("Wheat", 100, "CF001", "North Field", 500.0,60);
     CompositeFarm*  myFarm = new CompositeFarm("Farm001", "Main Farm Location", 50.0);
-    CropField*  cornField = new CropField("Corn", 150, "CF002", "Field 2",300.0);
+    CropField*  cornField = new CropField("Corn", 150, "CF002", "Field 2",300.0,45);
     myFarm->addUnit(wheatField);
     myFarm->addUnit(cornField);
 
@@ -111,6 +115,29 @@ void testComponent2()
     wheatField->rain(wheatField, 15);
     std::cout << "After more rain, soil state: " << wheatField->getSoilStateName() << std::endl;
 
-delete cornField;
-delete wheatField;
+// delete cornField;
+// delete wheatField;
+delete myFarm;
+}
+
+void testComponent3()
+{
+    CropField* myField = new CropField("Wheat", 1000, "Field1", "North", 200,50);
+    Fertilizer* ftl = new Fertilizer(myField);
+    ftl->increaseProduction();
+
+    int yield = ftl->harvest();
+    std::cout<<"Increased Yield: "<<yield<<std::endl;
+
+    ExtraBarn*  barn = new ExtraBarn(myField,50);
+    barn->add();
+    int cap = barn->getLeftoverCapacity();
+    std::cout<<"Total increased capacity after an extra barn: "<<cap<<std::endl;
+
+    delete ftl;
+    delete barn;
+    delete myField;
+
+    
+
 }

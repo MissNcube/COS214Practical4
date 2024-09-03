@@ -9,6 +9,7 @@ CompositeFarm::~CompositeFarm()
     for (FarmUnit* unit : farmUnits) {
         delete unit;
     }
+    farmUnits.clear();
 }
 
 int CompositeFarm::getTotalCapacity()
@@ -65,6 +66,16 @@ double CompositeFarm::getSensorData(string sensor) const
     }
 
     return sensorCount > 0 ? totalValue / sensorCount : -1;
+}
+
+int CompositeFarm::getYield()
+{
+       int total = 0;
+    for (const auto& unit : farmUnits) {
+        total += unit->getYield();
+    }
+    return total;
+    
 }
 
 string CompositeFarm::getUnitID() 

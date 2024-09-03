@@ -6,9 +6,9 @@
 int FruitfulSoil::harvestCrops(CropField *crop)
 {
     std::cout << "Abundant yield due to fruitful soil!" << std::endl;
-    int yield = crop->getTotalCapacity();
+    int yield = crop->getYield();
     yield *= 3;
-     crop->setTotalCapacity(yield);
+     crop->setYield(yield);
     return  yield;
     // return 3;  // Yield multiplier for fruitful soil
 }

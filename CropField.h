@@ -10,14 +10,16 @@ private:
     string cropType; 
     int totalCapacity;
     SoilState* soilState; 
+    int yield;
 
 public:
-    CropField(string cropType, int totalCapacity, string unitID, string location, double energyConsumption);
+    CropField(string cropType, int totalCapacity, string unitID, string location, double energyConsumption, int yield);
 
     int getTotalCapacity() override;
     string getCropType() override;
     string getUnitID() override;
     string getLocation() override;
+    int getYield() override;
     double getEnergyConsumption() override;
     double getSensorData(string sensor) const override; 
     void retrieveCrops();
@@ -28,8 +30,11 @@ public:
     void setSoilState(SoilState* state);
     string getSoilStateName(); 
     void rain(CropField* field, double rainAmt);
-    int harvestCrops(CropField* crop);
+    int harvestCrops(CropField* crop) ;
     void setTotalCapacity(int capacity);
+    void setYield(int i);
+
+   
  
 
 };

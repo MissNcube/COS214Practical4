@@ -1,13 +1,14 @@
 #include "CropField.h"
 #include "DrySoil.h"
 
-CropField::CropField(string cropType, int totalCapacity, string unitID, string location, double energyConsumption):FarmUnit("CropField",unitID, location, energyConsumption)
+CropField::CropField(string cropType, int totalCapacity, string unitID, string location, double energyConsumption, int yield):FarmUnit("CropField",unitID, location, energyConsumption)
 {           
             this->unitID = unitID;
             this->location = location;
             this->cropType = cropType;
             this->totalCapacity = totalCapacity;
             this->energyConsumption = energyConsumption;
+            this->yield = yield;
             this->soilState = new DrySoil();    //default state
 }
 
@@ -30,6 +31,12 @@ string CropField::getLocation()
 {
     return this->location;
 }
+
+int CropField::getYield()
+{
+    return this->yield; 
+}
+
 
 void CropField::updateSensorData(string sensor, double value)
 {
@@ -83,4 +90,9 @@ int CropField::harvestCrops(CropField* crop)
 void CropField::setTotalCapacity(int capacity)
 {
     this->totalCapacity = capacity;
+}
+
+void CropField::setYield(int i)
+{
+    this->yield = i;
 }

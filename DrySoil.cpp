@@ -7,9 +7,9 @@
 int DrySoil::harvestCrops(CropField *crop)
 {
     std::cout << "Minimal yield due to dry soil." << std::endl;
-    int yield = crop->getTotalCapacity();
+    int yield = crop->getYield();
     yield *=1;
-    crop->setTotalCapacity(yield);
+    crop->setYield(yield);
     return yield;
     // return 1;  // Yield multiplier for dry soil
 }
