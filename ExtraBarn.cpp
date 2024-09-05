@@ -28,10 +28,6 @@ string ExtraBarn::getName()
     return "ExtraBarn: " + unitID + " at " + location;
 }
 
-string ExtraBarn::getName()
-{
-    return "ExtraBarn: " + unitID + " at " + location;
-}
 
 int ExtraBarn::getYield()
 {

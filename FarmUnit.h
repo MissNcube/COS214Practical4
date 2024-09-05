@@ -41,9 +41,6 @@ public:
     // for trucks
     Truck *buyTruck(const std::string &truckType, CropField *field, int threshold, int id, int capy);
     void sellTruck(Truck *truck);
-    
-    virtual void updateSensorData(string sensor, double value) = 0; 
-
     virtual string getName() = 0;
 };
 

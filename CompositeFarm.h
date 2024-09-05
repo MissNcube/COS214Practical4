@@ -2,19 +2,14 @@
 #define COMPOSITE_FARM_H
 
 #include "FarmUnit.h"
-#include "FarmTraversal.h"
-#include "BreadthFirstTraversal.h"
-#include "DepthFirstTraversal.h"
-#include "CropField.h"
 #include "Truck.h"
 
 #include <vector>
 
-class CropField;
-
 class CompositeFarm : public FarmUnit {
 private:
-    vector<FarmUnit*> farmUnits; 
+    vector<FarmUnit*> units; 
+    std::vector<Truck*> trucks;
 
 public:
    CompositeFarm(string unitID, string location, double energyConsumption);
@@ -35,6 +30,14 @@ public:
     void addUnit(FarmUnit* unit);
     void removeUnit(FarmUnit* unit);
     vector<FarmUnit*> getFarmUnits() const;
+    string getName() override;
+
+    //TRUCK SITUATION:
+    void addTruck(Truck* truck);
+    void removeTruck(Truck* truck);
+
+
+    int getTruckCount() const;
 };
 
 #endif 
