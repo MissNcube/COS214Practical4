@@ -31,6 +31,7 @@ public:
     // Pure virtual methods for sensor data management
     virtual void updateSensorData(string sensor, double value) = 0; 
 
+    virtual string getName() = 0;
 };
 
 #endif 

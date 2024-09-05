@@ -13,6 +13,7 @@ public:
     ExtraBarn(CropField* cropField, int additionalCapacity);
     void add();
     int getLeftoverCapacity();
+    string getName()  override;
 
 };
 

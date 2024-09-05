@@ -13,3 +13,8 @@ int ExtraBarn::getLeftoverCapacity()
 {
    return cropField->getTotalCapacity();
 }
+
+string ExtraBarn::getName()
+{
+    return "ExtraBarn: " + unitID + " at " + location;
+}

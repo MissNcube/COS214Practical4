@@ -5,16 +5,22 @@
 #include "FloodedSoil.h"
 #include "Fertilizer.h"
 #include "ExtraBarn.h"
+#include "FarmTraversal.h"
+#include "DepthFirstTraversal.h"
+#include "BreadthFirstTraversal.h"
 
 void testComponent1();
 void testComponent2();
 void testComponent3();
+void testComponent5();
 
 int main()
 {
     // testComponent1();
     //testComponent2();
-    testComponent3();
+    //testComponent3();
+    testComponent5();
+
     return 0;
 }
 
@@ -137,7 +143,54 @@ void testComponent3()
     delete ftl;
     delete barn;
     delete myField;
+}
 
-    
+void testComponent5()
+{
+    // Create farm units
+    CropField* cornField = new CropField("Corn", 100, "CF001", "North Field", 50.0, 20);
+    CropField* wheatField = new CropField("Wheat", 150, "CF002", "South Field", 40.0, 25);
+    ExtraBarn* barn1 = new ExtraBarn(wheatField, 30.0);
 
+    // Create composite farms and add farm units to them
+    CompositeFarm* mainFarm = new CompositeFarm("Farm001", "Main Farm Location", 50.0);
+    mainFarm->addUnit(cornField);
+    mainFarm->addUnit(barn1);
+
+    CompositeFarm* secondaryFarm = new CompositeFarm("Farm002", "Secondary Farm Location", 50.0);
+    secondaryFarm->addUnit(wheatField);
+    secondaryFarm->addUnit(mainFarm); // Adding mainFarm as part of secondaryFarm
+
+    // Breadth-First Traversal
+    /*std::cout << "Breadth-First Traversal:" << std::endl;
+    BreadthFirstTraversal bfs(secondaryFarm); // Start from the root, secondaryFarm
+
+    while (!bfs.isDone())
+    {
+        FarmUnit* current = bfs.next();
+        if (current != nullptr)
+        {
+            std::cout << "Visiting: " << current->getName() << std::endl;
+        }
+    }
+
+    */
+
+    std::cout << std::endl;
+
+    // Depth-First Traversal
+    std::cout << "Depth-First Traversal:" << std::endl;
+    DepthFirstTraversal dfs(secondaryFarm); // Start from the root, secondaryFarm
+
+    while (!dfs.isDone())
+    {
+        FarmUnit* current = dfs.next();
+        if (current != nullptr)
+        {
+            std::cout << "Visiting: " << current->getName() << std::endl;
+        }
+    }
+
+    // Clean up dynamically allocated memory
+    delete secondaryFarm; // This should recursively delete the other farm units
 }

@@ -96,3 +96,8 @@ void CropField::setYield(int i)
 {
     this->yield = i;
 }
+
+string CropField::getName()
+{
+    return "CropField: " + cropType + " at " + location;
+}

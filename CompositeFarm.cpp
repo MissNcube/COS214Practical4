@@ -6,10 +6,10 @@ CompositeFarm::CompositeFarm(string unitID, string location, double energyConsum
 
 CompositeFarm::~CompositeFarm() 
 {
-    for (FarmUnit* unit : farmUnits) {
+    for (auto unit : farmUnits) {
         delete unit;
     }
-    farmUnits.clear();
+    //farmUnits.clear();
 }
 
 int CompositeFarm::getTotalCapacity()
@@ -23,14 +23,14 @@ int CompositeFarm::getTotalCapacity()
 
 string CompositeFarm::getCropType() 
 {
-     std::string combinedCropTypes;
-        for (auto unit : farmUnits) {
-            if (!combinedCropTypes.empty()) {
-                combinedCropTypes += ", ";
-            }
-            combinedCropTypes += unit->getCropType();
+    std::string combinedCropTypes;
+    for (auto unit : farmUnits) {
+        if (!combinedCropTypes.empty()) {
+            combinedCropTypes += ", ";
         }
-        return combinedCropTypes;
+        combinedCropTypes += unit->getCropType();
+    }
+    return combinedCropTypes;
 }
 
 // string CompositeFarm::getSoilStateName() {
@@ -135,4 +135,20 @@ void CompositeFarm::removeUnit(FarmUnit* unit)
 vector<FarmUnit*> CompositeFarm::getFarmUnits() const 
 {
     return farmUnits;
+}
+
+FarmTraversal *CompositeFarm::createBFT()
+{
+    return new BreadthFirstTraversal(root);
+}
+
+FarmTraversal *CompositeFarm::createDFT()
+{
+    return new DepthFirstTraversal(root);
+}
+
+
+std::string CompositeFarm::getName()
+{
+    return "CompositeFarm: " + unitID + " at " + location;
 }

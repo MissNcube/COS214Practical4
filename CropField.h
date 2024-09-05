@@ -34,7 +34,7 @@ public:
     void setTotalCapacity(int capacity);
     void setYield(int i);
 
-   
+    string getName() override;
  
 
 };

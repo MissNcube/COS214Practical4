@@ -2,11 +2,20 @@
 #define COMPOSITE_FARM_H
 
 #include "FarmUnit.h"
+#include "FarmTraversal.h"
+#include "BreadthFirstTraversal.h"
+#include "DepthFirstTraversal.h"
+#include "CropField.h"
 #include <vector>
+
+class CropField;
 
 class CompositeFarm : public FarmUnit {
 private:
-    vector<FarmUnit*> farmUnits; 
+    vector<FarmUnit*> farmUnits;
+    FarmUnit* root; 
+    CropField*  currCropField;
+    CropField* cfName;
 
 public:
    CompositeFarm(string unitID, string location, double energyConsumption);
@@ -25,6 +34,11 @@ public:
     void addUnit(FarmUnit* unit);
     void removeUnit(FarmUnit* unit);
     vector<FarmUnit*> getFarmUnits() const;
+    FarmTraversal* createBFT();
+    FarmTraversal* createDFT();
+    //string getCropName();
+    string getName() override;
+
 };
 
 #endif 
