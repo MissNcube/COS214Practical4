@@ -1,7 +1,7 @@
 #include "CropField.h"
-#include "DrySoil.h"
 
-CropField::CropField(string cropType, int totalCapacity, string unitID, string location, double energyConsumption, int yield):FarmUnit("CropField",unitID, location, energyConsumption)
+
+CropField::CropField(string cropType, int totalCapacity,string unitID, string location, double energyConsumption, int yield):FarmUnit("CropField",unitID, location, energyConsumption)
 {           
             this->unitID = unitID;
             this->location = location;
@@ -74,6 +74,11 @@ string CropField::getSoilStateName()
     return soilState->getName();
 }
 
+SoilState *CropField::getSoilState()
+{
+    return soilState;
+}
+
 void CropField::rain(CropField* field, double rainAmt)
 {
     soilState->rain(field, rainAmt);
@@ -95,4 +100,36 @@ void CropField::setTotalCapacity(int capacity)
 void CropField::setYield(int i)
 {
     this->yield = i;
+}
+
+void CropField::currSoilState()
+{
+    if(soilState && soilState->getName() == "Dry")
+    {
+      notifications->notifyTruck();
+      std::cout<<"Trucks were notified of the dry soil."<<std::endl;
+    }
+}
+
+void CropField::currStorageCap()
+{
+    if(totalCapacity >= 1000)
+    {
+        notifications->notifyTruck();
+    }else
+    {
+        std::cout<<"!!!!WORK HARDER!!!!"<<std::endl;
+    }
+}
+
+void CropField::displayDetails(CropField *field)
+{
+    std::cout<<"CROPFIELD DATA : "<<std::endl;
+    std::cout<<field->getCropType()<<"\t"<<
+    field->getLocation()<<"\t"<<
+    field->getUnitID()<<"\t"<<
+    field->getEnergyConsumption()<<"\t"<<
+    field->getYield()<<"\t "<<
+    field->getTotalCapacity()<<"\t"<<
+    field->getSoilStateName()<<std::endl;
 }

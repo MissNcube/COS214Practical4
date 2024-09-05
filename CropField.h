@@ -1,10 +1,13 @@
 #ifndef CROP_FIELD_H
 #define CROP_FIELD_H
 
-#include "FarmUnit.h"
-#include "SoilState.h"
 
-class CropField : public FarmUnit
+#include "FarmUnit.h"
+#include "DrySoil.h"
+#include "Notifications.h"
+
+
+class CropField : public FarmUnit , public Notifications
 {
 private:
     string cropType; 
@@ -13,8 +16,9 @@ private:
     int yield;
 
 public:
-    CropField(string cropType, int totalCapacity, string unitID, string location, double energyConsumption, int yield);
+    CropField(string cropType, int totalCapacity,string unitID, string location, double energyConsumption, int yield);
 
+  
     int getTotalCapacity() override;
     string getCropType() override;
     string getUnitID() override;
@@ -29,13 +33,16 @@ public:
 
     void setSoilState(SoilState* state);
     string getSoilStateName(); 
+    SoilState* getSoilState();
     void rain(CropField* field, double rainAmt);
     int harvestCrops(CropField* crop) ;
     void setTotalCapacity(int capacity);
     void setYield(int i);
 
-   
- 
+    //truck
+    void currSoilState();
+    void currStorageCap();
+    void displayDetails(CropField* field);
 
 };
 

@@ -1,20 +1,28 @@
 #include <iostream>
-#include "CropField.h"
 #include "CompositeFarm.h"
+#include "CropField.h"
 #include "FarmUnit.h"
 #include "FloodedSoil.h"
 #include "Fertilizer.h"
 #include "ExtraBarn.h"
+#include "DeliveryTruck.h"
+#include "FertilizerTruck.h"
+#include "TruckFactory.h"
+
+
 
 void testComponent1();
 void testComponent2();
 void testComponent3();
+void testComponent4();
 
 int main()
 {
-    // testComponent1();
+
+    //testComponent1();
     //testComponent2();
-    testComponent3();
+    //testComponent3();
+    testComponent4();
     return 0;
 }
 
@@ -122,22 +130,97 @@ delete myFarm;
 
 void testComponent3()
 {
-    CropField* myField = new CropField("Wheat", 1000, "Field1", "North", 200,50);
-    Fertilizer* ftl = new Fertilizer(myField);
+    CropField* tomatoes= new CropField("Tomatoes", 1000, "Field1", "North", 200,50);
+    CropField* potatoes = new CropField("Potato",900,"CFT8" ,"Section6" , 150 ,50);
+    CompositeFarm* farm1 = new CompositeFarm("OpenLand" , "SpringField" , 400);
+   
+
+
+
+    Fertilizer* ftl = new Fertilizer(tomatoes);
     ftl->increaseProduction();
 
     int yield = ftl->harvest();
     std::cout<<"Increased Yield: "<<yield<<std::endl;
 
-    ExtraBarn*  barn = new ExtraBarn(myField,50);
+    ExtraBarn*  barn = new ExtraBarn(tomatoes,50);
     barn->add();
     int cap = barn->getLeftoverCapacity();
     std::cout<<"Total increased capacity after an extra barn: "<<cap<<std::endl;
 
-    delete ftl;
-    delete barn;
-    delete myField;
+     farm1->addUnit(tomatoes);
+     farm1->addUnit(potatoes);
+    std::cout<<"++++++++++++++++++++FARM DATA++++++++++++++++++++++ "<<std::endl
+    <<farm1->getCropType()<<" "<<farm1->getUnitID()<<" "<<farm1->getLocation()<<" "
+                          <<farm1->getTotalCapacity()<<" "<<farm1->getYield()<<" "
+                          <<farm1->getEnergyConsumption()<<std::endl;
+  
+}
 
-    
+void testComponent4()
+{
+    std::cout<<"+++++++++++++++++++CROPS++++++++++++++++++++++ "<<std::endl;
+    CropField* sunfwer = new CropField("Sunflower" , 1500 ,"THJ9" ,"SpringField",500,160);
+    CropField* wheatField = new CropField("Wheat",500,"FTHY9","NorthWest" ,230.0 , 800);
+    CropField* cornField = new CropField("Corn", 400,"CornField002", "South Farm", 220.0, 800);
 
+     std::cout<<"Sunflower Field data: "<<std::endl;
+     sunfwer->displayDetails(sunfwer);
+     std::cout<<"Wheat field data: "<<std::endl;
+     wheatField->displayDetails(wheatField);
+     std::cout<<"Corn field data: "<<std::endl;
+     cornField->displayDetails(cornField);
+
+    std::cout<<"++++++++++++++++++++FARM DATA++++++++++++++++++++++ "<<std::endl;
+   
+    CompositeFarm* farmy = new CompositeFarm("SunFlowerFarm","Springs",500);
+    farmy->addUnit(sunfwer);
+    farmy->addUnit(wheatField);
+    farmy->addUnit(cornField);
+
+    std::cout<<farmy->getCropType()<< std::endl;
+    std::cout<<farmy->getUnitID()<< std::endl;
+    std::cout<<farmy->getLocation()<< std::endl;
+    std::cout<<farmy->getTotalCapacity()<< std::endl;
+    std::cout<<farmy->getYield()<< std::endl;
+    std::cout<<farmy->getEnergyConsumption()<<std::endl;
+
+
+std::cout<<"++++++++++++++++++++TRUCKS+++++++++++++++++++++ "<<std::endl;
+    //Trucks
+    std::cout << "TEST: Buying trucks for crop fields" << std::endl;
+    DeliveryTruck* dtk = dynamic_cast<DeliveryTruck*>(wheatField->buyTruck("DeliveryTruck", wheatField, 100, 1,50));
+    FertilizerTruck* ftk = dynamic_cast<FertilizerTruck*>(cornField->buyTruck("FertilizerTruck", cornField, 80,6 ,30));
+
+    Notifications noti;
+    noti.addTruck(ftk);
+    noti.addTruck(dtk);
+    std::cout<<"ID of truck dtk: "<<dtk->getId()<<std::endl;
+    std::cout<<"ID of truck ftk: "<<ftk->getId()<<std::endl;
+    std::cout<<"++++++++++++++++++++NOTIFICATIONS++++++++++++++++++++++ "<<std::endl;
+    noti.notifyTruck();
+    noti.notifyTruck();
+    noti.notifyTruck();
+    std::cout<<"Sunflower Field data: "<<std::endl;
+    sunfwer->displayDetails(sunfwer);
+    std::cout<<"Wheat field data: "<<std::endl;
+     wheatField->displayDetails(wheatField);
+     std::cout<<"Corn field data: "<<std::endl;
+     cornField->displayDetails(cornField);
+
+
+     // Selling trucks
+    std::cout << "TEST: Selling trucks from crop fields" << std::endl;
+    wheatField->sellTruck(dtk);
+    cornField->sellTruck(ftk);
+
+    std::cout<<"++++++++++++++++++++FARM DATA++++++++++++++++++++++ "<<std::endl;
+    std::cout<<farmy->getCropType()<< std::endl;
+    std::cout<<farmy->getUnitID()<< std::endl;
+    std::cout<<farmy->getLocation()<< std::endl;
+    std::cout<<farmy->getTotalCapacity()<< std::endl;
+    std::cout<<farmy->getYield()<< std::endl;
+    std::cout<<farmy->getEnergyConsumption()<<std::endl;
+
+    delete wheatField;
 }

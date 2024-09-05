@@ -2,11 +2,14 @@
 #define COMPOSITE_FARM_H
 
 #include "FarmUnit.h"
+#include "Truck.h"
+
 #include <vector>
 
 class CompositeFarm : public FarmUnit {
 private:
-    vector<FarmUnit*> farmUnits; 
+    vector<FarmUnit*> units; 
+    std::vector<Truck*> trucks;
 
 public:
    CompositeFarm(string unitID, string location, double energyConsumption);
@@ -22,9 +25,17 @@ public:
     double getSensorData(string sensor) const override;
     int getYield() override;
     void updateSensorData(string sensor, double value) override;
+
+    //special consideration
     void addUnit(FarmUnit* unit);
     void removeUnit(FarmUnit* unit);
     vector<FarmUnit*> getFarmUnits() const;
+
+    //TRUCK SITUATION:
+    void addTruck(Truck* truck);
+    void removeTruck(Truck* truck);
+
+    int getTruckCount() const;
 };
 
 #endif 
