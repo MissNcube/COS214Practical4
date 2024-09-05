@@ -3,15 +3,20 @@
 DepthFirstTraversal::DepthFirstTraversal(FarmUnit *root) : root(root), curr(nullptr)
 {
     this->stk.push(this->root);
+    visited.clear();
 }
 
 DepthFirstTraversal::~DepthFirstTraversal()
 {
-    if(!stk.empty())
+    while (!stk.empty())
     {
-        delete stk.top();
+        // If stk contains pointers to dynamically allocated FarmUnits, delete them.
+        FarmUnit* unit = stk.top();
         stk.pop();
+        delete unit; // Assuming you own the memory
     }
+    // Clear visited if necessary (not usually needed)
+    visited.clear();
 }
 
 FarmUnit *DepthFirstTraversal::firstFarm()
@@ -25,37 +30,28 @@ FarmUnit *DepthFirstTraversal::firstFarm()
 }
 
 FarmUnit *DepthFirstTraversal::next()
-{    while (!stk.empty()) {
+{    if(!stk.empty())
+    {
         curr = stk.top();
         stk.pop();
 
-        // Skip if the current node is already visited or null
-        if (curr == nullptr) {
-            continue; // Skip to the next iteration
-        }
-
-        // Check if already visited
-        if (visited.find(curr) != visited.end() || curr == nullptr) {
-            continue; // Skip to the next iteration
-        }
-
-        visited.insert(curr); // Mark this node as visited
-
-        // Check if the current node is a CompositeFarm
-        CompositeFarm* ptr = dynamic_cast<CompositeFarm*>(curr);
-        if (ptr != nullptr) {
-            // Push child farms onto the stack in reverse order
-            for (auto index = ptr->getFarmUnits().rbegin(); index != ptr->getFarmUnits().rend(); ++index) {
-                if (*index != nullptr) {
-                    cout << "Pushing onto stack: " << (*index)->getName() << endl;
-                    stk.push(*index);
-                } else {
-                    cout << "Encountered null farm unit" << endl; // Debug output for null units
+            if(curr == nullptr)
+            {
+                return nullptr;
+            }
+        CompositeFarm* ptr =  dynamic_cast<CompositeFarm*>(curr);
+        if(ptr != nullptr)
+        {
+            for(auto& it :  ptr->getFarmUnits())
+            {
+                if(it != nullptr && visited.find(it) == visited.end())
+                {
+                    stk.push(it);
+                    visited.insert(it);
                 }
             }
         }
-
-        return curr; // Return the current valid node
+        return curr;
     }
     return nullptr;
 }

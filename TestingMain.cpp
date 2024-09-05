@@ -150,20 +150,21 @@ void testComponent5()
     // Create farm units
     CropField* cornField = new CropField("Corn", 100, "CF001", "North Field", 50.0, 20);
     CropField* wheatField = new CropField("Wheat", 150, "CF002", "South Field", 40.0, 25);
-    ExtraBarn* barn1 = new ExtraBarn(wheatField, 30.0);
+    CropField* soybeanField = new CropField("Soybean", 200, "CF003", "South-West Field", 60.0, 85);
+    CropField* riceField = new CropField("Rice", 300, "CF004" , "East Field", 30.0, 95);
+    CropField* maizefield = new CropField("Maize", 100, "CF005" , "West-side", 78.6, 100);
 
     // Create composite farms and add farm units to them
     CompositeFarm* mainFarm = new CompositeFarm("Farm001", "Main Farm Location", 50.0);
     mainFarm->addUnit(cornField);
-    mainFarm->addUnit(barn1);
-
-    CompositeFarm* secondaryFarm = new CompositeFarm("Farm002", "Secondary Farm Location", 50.0);
-    secondaryFarm->addUnit(wheatField);
-    secondaryFarm->addUnit(mainFarm); // Adding mainFarm as part of secondaryFarm
+    mainFarm->addUnit(wheatField);
+    mainFarm->addUnit(soybeanField);
+    mainFarm->addUnit(riceField);
+    mainFarm->addUnit(maizefield);
 
     // Breadth-First Traversal
-    /*std::cout << "Breadth-First Traversal:" << std::endl;
-    BreadthFirstTraversal bfs(secondaryFarm); // Start from the root, secondaryFarm
+    std::cout << "Breadth-First Traversal:" << std::endl;
+    BreadthFirstTraversal bfs(mainFarm); // Start from the root, mainFarm
 
     while (!bfs.isDone())
     {
@@ -174,13 +175,11 @@ void testComponent5()
         }
     }
 
-    */
-
     std::cout << std::endl;
 
     // Depth-First Traversal
     std::cout << "Depth-First Traversal:" << std::endl;
-    DepthFirstTraversal dfs(secondaryFarm); // Start from the root, secondaryFarm
+    DepthFirstTraversal dfs(mainFarm); // Start from the root, mainFarm
 
     while (!dfs.isDone())
     {
@@ -192,5 +191,5 @@ void testComponent5()
     }
 
     // Clean up dynamically allocated memory
-    delete secondaryFarm; // This should recursively delete the other farm units
+    delete mainFarm; // This should recursively delete the other farm units
 }
