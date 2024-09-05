@@ -23,6 +23,16 @@ int ExtraBarn::getTotalCapacity()
     return cropField->getTotalCapacity()+additionalCapacity;
 }
 
+string ExtraBarn::getName()
+{
+    return "ExtraBarn: " + unitID + " at " + location;
+}
+
+string ExtraBarn::getName()
+{
+    return "ExtraBarn: " + unitID + " at " + location;
+}
+
 int ExtraBarn::getYield()
 {
     return cropField->getYield();

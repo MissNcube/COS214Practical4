@@ -135,40 +135,5 @@ void CompositeFarm::removeUnit(FarmUnit* unit)
 
 vector<FarmUnit*> CompositeFarm::getFarmUnits() const 
 {
-    return units;
-}
-
-
-void CompositeFarm::addTruck(Truck* truck) {
-    if (truck) {
-        trucks.push_back(truck);
-        std::cout << "Truck added to CompositeFarm!" << std::endl;
-        std::cout << "Truck added. Total trucks: " << getTruckCount() << std::endl;
-    }
-}
-
-
-void CompositeFarm::removeTruck(Truck* truck)
-{
-    if (truck)
-    {
-        auto it = std::find(trucks.begin(), trucks.end(), truck);
-        if (it != trucks.end())
-        {
-            trucks.erase(it);  // Remove the truck
-            std::cout << "Truck removed from CompositeFarm." << std::endl;
-        }
-        else
-        {
-            std::cout << "Truck not found in CompositeFarm." << std::endl;
-        }
-    }
-    else
-    {
-        std::cout << "Invalid truck." << std::endl;
-    }
-}
-
-int CompositeFarm::getTruckCount() const {
-    return trucks.size();
+    return farmUnits;
 }

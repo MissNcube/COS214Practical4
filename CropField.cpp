@@ -133,3 +133,7 @@ void CropField::displayDetails(CropField *field)
     field->getTotalCapacity()<<"\t"<<
     field->getSoilStateName()<<std::endl;
 }
+string CropField::getName()
+{
+    return "CropField: " + cropType + " at " + location;
+}

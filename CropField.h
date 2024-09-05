@@ -43,6 +43,8 @@ public:
     void currSoilState();
     void currStorageCap();
     void displayDetails(CropField* field);
+    string getName() override;
+ 
 
 };
 
