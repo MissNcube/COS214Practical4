@@ -18,13 +18,6 @@ public:
     int getYield() override;
 
 
-
-
-
 };
-
-
-
-
 
 #endif

@@ -1,51 +1,60 @@
 #ifndef CROP_FIELD_H
 #define CROP_FIELD_H
 
-
 #include "FarmUnit.h"
-#include "DrySoil.h"
 #include "Notifications.h"
 
+#include "Truck.h"
 
-class CropField : public FarmUnit , public Notifications
+#include "SoilState.h"
+#include "DrySoil.h"
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+class CropField : public FarmUnit, public Notifications
 {
 private:
-    string cropType; 
+    std::string cropType;
     int totalCapacity;
-    SoilState* soilState; 
+    SoilState *soilState;
     int yield;
+    std::vector<Truck *> trucks;
 
 public:
-    CropField(string cropType, int totalCapacity,string unitID, string location, double energyConsumption, int yield);
-
-  
+    //
+    CropField(std::string cropType, int totalCapacity, std::string unitID, std::string location, double energyConsumption, int yield);    
     int getTotalCapacity() override;
-    string getCropType() override;
-    string getUnitID() override;
-    string getLocation() override;
-    int getYield() override;
+    std::string getCropType() override;
+    std::string getUnitID() override;
+    std::string getLocation() override;
     double getEnergyConsumption() override;
-    double getSensorData(string sensor) const override; 
+    int getYield() override;
+    void updateSensorData(std::string sensor, double value) override;
+    double getSensorData(std::string sensor) const override;
+    //
     void retrieveCrops();
-    void updateSensorData(string sensor, double value) override;
-
-    //State
-
-    void setSoilState(SoilState* state);
-    string getSoilStateName(); 
-    SoilState* getSoilState();
-    void rain(CropField* field, double rainAmt);
-    int harvestCrops(CropField* crop) ;
+    void setSoilState(SoilState *state);
+    std::string getSoilStateName();
+    SoilState *getSoilState();
+    void rain(CropField *field, double rainAmt);
+    int harvestCrops(CropField *crop);
     void setTotalCapacity(int capacity);
     void setYield(int i);
-
-    //truck
     void currSoilState();
     void currStorageCap();
-    void displayDetails(CropField* field);
-    string getName() override;
- 
-
+    void displayDetails();
+    std::string getName() override;
+    //
+    void addTruck(Truck *truck) override;
+    void removeTruck(Truck *truck) override;
+    void notifyTrucks() override;
+    void notifyTruck(Truck *specificTruck) override;
+    size_t getCount() const override;
+    //
+    Truck *buyTruck(const std::string &truckType, int threshold, int id, int capacity);
+    void sellTruck();
 };
 
-#endif 
+#endif

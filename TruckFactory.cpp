@@ -1,4 +1,5 @@
 #include "TruckFactory.h"
+#include <iostream>
 
 Truck *TruckFactory::createTruck(const std::string &truckType, CropField *field, int threshold, int id, int capy)
 {

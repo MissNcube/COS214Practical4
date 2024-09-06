@@ -1,19 +1,18 @@
 #include "CompositeFarm.h"
-#include "Truck.h"
-
 #include <algorithm>
 
-CompositeFarm::CompositeFarm(string unitID, string location, double energyConsumption)
+CompositeFarm::CompositeFarm(string unitID, string location, double energyConsumption)//for fun
     : FarmUnit("CompositeFarm", unitID, location, energyConsumption) {}
 
-CompositeFarm::~CompositeFarm() 
+CompositeFarm::~CompositeFarm()
 {
-    for (FarmUnit* unit : units) {
+    for (FarmUnit *unit : units)
+    {
         delete unit;
     }
     units.clear();
 
-    for(Truck* truck : trucks)
+    for (Truck *truck : trucks)
     {
         delete truck;
     }
@@ -23,43 +22,47 @@ CompositeFarm::~CompositeFarm()
 int CompositeFarm::getTotalCapacity()
 {
     int total = 0;
-    for (const auto& unit : units) {
+    for (const auto &unit : units)
+    {
         total += unit->getTotalCapacity();
     }
     return total;
 }
 
-
-string CompositeFarm::getCropType() 
+string CompositeFarm::getCropType()
 {
-     std::string crops;
-        for (auto unit : units) {
-            if (!crops.empty()) {
-                crops += "| ";
-            }
-            crops += unit->getCropType();
+    std::string crops;
+    for (auto unit : units)
+    {
+        if (!crops.empty())
+        {
+            crops += "| ";
         }
-        return crops;
+        crops += unit->getCropType();
+    }
+    return crops;
 }
 
-
-double CompositeFarm::getEnergyConsumption() 
+double CompositeFarm::getEnergyConsumption()
 {
     double tltE = this->energyConsumption;
-    for (const auto& unit : units) {
+    for (const auto &unit : units)
+    {
         tltE += unit->getEnergyConsumption();
     }
     return tltE;
 }
 
-double CompositeFarm::getSensorData(string sensor) const 
+double CompositeFarm::getSensorData(string sensor) const
 {
     double sum = 0;
     int sensors = 0;
 
-    for (const auto& unit : units) {
+    for (const auto &unit : units)
+    {
         double val = unit->getSensorData(sensor);
-        if (val != -1) {
+        if (val != -1)
+        {
             sum += val;
             sensors++;
         }
@@ -70,51 +73,55 @@ double CompositeFarm::getSensorData(string sensor) const
 
 int CompositeFarm::getYield()
 {
-       int tlt = 0;
-    for (const auto& unit : units) {
+    int tlt = 0;
+    for (const auto &unit : units)
+    {
         tlt += unit->getYield();
     }
     return tlt;
-    
 }
 
-string CompositeFarm::getUnitID() 
+string CompositeFarm::getUnitID()
 {
-   std::string combinedUnitIDs;
-        for (auto unit : units) {
-            if (!combinedUnitIDs.empty()) {
-                combinedUnitIDs += "| ";
-            }
-            combinedUnitIDs += unit->getUnitID();
+    std::string combinedUnitIDs;
+    for (auto unit : units)
+    {
+        if (!combinedUnitIDs.empty())
+        {
+            combinedUnitIDs += " | ";
         }
-        return combinedUnitIDs;
+        combinedUnitIDs += unit->getUnitID();
+    }
+    return combinedUnitIDs;
 }
 
-string CompositeFarm::getLocation() 
+string CompositeFarm::getLocation()
 {
     std::string combinedLocations;
-        for (auto unit : units) {
-            if (!combinedLocations.empty()) {
-                combinedLocations += "| ";
-            }
-            combinedLocations += unit->getLocation();
+    for (auto unit : units)
+    {
+        if (!combinedLocations.empty())
+        {
+            combinedLocations += " | ";
         }
-        return combinedLocations;
+        combinedLocations += unit->getLocation();
+    }
+    return combinedLocations;
 }
 
-void CompositeFarm::updateSensorData(string sensor, double value) 
+void CompositeFarm::updateSensorData(string sensor, double value)
 {
-    for (auto& unit : units) {
-        unit->updateSensorData(sensor, value);
+    for (auto &unit : units)
+    {
+        unit->updateSensorData(sensor , value);
     }
 }
 
-void CompositeFarm::addUnit(FarmUnit* unit)
+void CompositeFarm::addUnit(FarmUnit *unit)
 {
-    if(unit)
+    if (unit)
     {
         units.push_back(unit);
-        
     }
     else
     {
@@ -122,49 +129,51 @@ void CompositeFarm::addUnit(FarmUnit* unit)
     }
 }
 
-void CompositeFarm::removeUnit(FarmUnit* unit) 
+void CompositeFarm::removeUnit(FarmUnit *unit)
 {
-    if(unit){
+    if (unit)
+    {
         units.erase(remove(units.begin(), units.end(), unit), units.end());
     }
-    else 
+    else
     {
         return;
     }
 }
 
-vector<FarmUnit*> CompositeFarm::getFarmUnits() const 
+vector<FarmUnit *> CompositeFarm::getFarmUnits() const
 {
     return units;
 }
 
 string CompositeFarm::getName()
 {
-    return "CompositeFarm: " +unitID + " at " + location;
+    return "CompositeFarm: " + unitID + " at " + location;
 }
 
-void CompositeFarm::addTruck(Truck* truck) {
-    if (truck) {
+void CompositeFarm::addTruck(Truck *truck)
+{
+    if (truck)
+    {
         trucks.push_back(truck);
-        std::cout << "Truck added to CompositeFarm!" << std::endl;
+        std::cout << "TRUCK ADD TO FARM" << std::endl;
         std::cout << "Truck added. Total trucks: " << getTruckCount() << std::endl;
     }
 }
 
-
-void CompositeFarm::removeTruck(Truck* truck)
+void CompositeFarm::removeTruck(Truck *truck)
 {
     if (truck)
     {
         auto it = std::find(trucks.begin(), trucks.end(), truck);
         if (it != trucks.end())
         {
-            trucks.erase(it);  // Remove the truck
-            std::cout << "Truck removed from CompositeFarm." << std::endl;
+            trucks.erase(it); 
+            std::cout << "Truck removed from "<<unitID<<": "<< truck->getId() << std::endl;
         }
         else
         {
-            std::cout << "Truck not found in CompositeFarm." << std::endl;
+            std::cout << "Truck not found in the Farm." << std::endl;
         }
     }
     else
@@ -173,6 +182,18 @@ void CompositeFarm::removeTruck(Truck* truck)
     }
 }
 
-int CompositeFarm::getTruckCount() const {
+int CompositeFarm::getTruckCount() const
+{
     return trucks.size();
+}
+
+void CompositeFarm::displayD()
+{
+    std::cout << "Farm: " << std::endl;
+    std::cout << getCropType() << std::endl;
+    std::cout << getUnitID() << std::endl;
+    std::cout << getLocation() << std::endl;
+    std::cout << getTotalCapacity() << std::endl;
+    std::cout << getYield() << std::endl;
+    std::cout << getEnergyConsumption() << std::endl;
 }

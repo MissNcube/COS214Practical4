@@ -1,6 +1,7 @@
 #ifndef FERTILIZER_H
 #define FERTILIZER_H
 
+#include "FruitfulSoil.h"
 #include "CropField.h"
 
 class Fertilizer : public CropField
@@ -18,11 +19,8 @@ public:
     double getEnergyConsumption() override;
     double getSensorData(string sensor) const override;
     void updateSensorData(string sensor, double value) override;
-
-    // Enhancing functionality
     void increaseProduction();
     int harvest();
-
 };
 
 #endif

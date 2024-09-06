@@ -1,15 +1,15 @@
 #include "CropField.h"
+#include "TruckFactory.h"
 
-
-CropField::CropField(string cropType, int totalCapacity,string unitID, string location, double energyConsumption, int yield):FarmUnit("CropField",unitID, location, energyConsumption)
-{           
-            this->unitID = unitID;
-            this->location = location;
-            this->cropType = cropType;
-            this->totalCapacity = totalCapacity;
-            this->energyConsumption = energyConsumption;
-            this->yield = yield;
-            this->soilState = new DrySoil();    //default state
+CropField::CropField(string cropType, int totalCapacity, string unitID, string location, double energyConsumption, int yield) : FarmUnit("CropField", unitID, location, energyConsumption)
+{
+    this->unitID = unitID;
+    this->location = location;
+    this->cropType = cropType;
+    this->totalCapacity = totalCapacity;
+    this->energyConsumption = energyConsumption;
+    this->yield = yield;
+    this->soilState = new DrySoil();
 }
 
 int CropField::getTotalCapacity()
@@ -34,20 +34,18 @@ string CropField::getLocation()
 
 int CropField::getYield()
 {
-    return this->yield; 
+    return this->yield;
 }
-
 
 void CropField::updateSensorData(string sensor, double value)
 {
-     sensorData[sensor] = value;
+    sensorData[sensor] = value;
 }
-
 
 double CropField::getSensorData(string sensor) const
 {
-     auto it = sensorData.find(sensor);
-    return (it != sensorData.end()) ? it->second : -1; 
+    auto it = sensorData.find(sensor);
+    return (it != sensorData.end()) ? it->second : -1;
 }
 
 double CropField::getEnergyConsumption()
@@ -62,7 +60,7 @@ void CropField::retrieveCrops()
 
 void CropField::setSoilState(SoilState *state)
 {
-    if(soilState)
+    if (soilState)
     {
         delete soilState;
     }
@@ -79,17 +77,16 @@ SoilState *CropField::getSoilState()
     return soilState;
 }
 
-void CropField::rain(CropField* field, double rainAmt)
+void CropField::rain(CropField *field, double rainAmt)
 {
     soilState->rain(field, rainAmt);
 }
 
-int CropField::harvestCrops(CropField* crop)
+int CropField::harvestCrops(CropField *crop)
 {
     std::cout << "Harvesting crops based on current soil state." << std::endl;
     int yield = soilState->harvestCrops(crop);
-    //std::cout << "Yield: " << yield << " units of crops harvested." << std::endl;
-    return  yield;
+    return yield;
 }
 
 void CropField::setTotalCapacity(int capacity)
@@ -104,36 +101,119 @@ void CropField::setYield(int i)
 
 void CropField::currSoilState()
 {
-    if(soilState && soilState->getName() == "Dry")
+    if (soilState && soilState->getName() == "Dry")
     {
-      notifications->notifyTruck();
-      std::cout<<"Trucks were notified of the dry soil."<<std::endl;
+        notifyTrucks();
+        std::cout << "Notified the trucks about the DrySoil" << std::endl;
     }
 }
 
 void CropField::currStorageCap()
 {
-    if(totalCapacity >= 1000)
+    if (totalCapacity >= 1000)
     {
-        notifications->notifyTruck();
-    }else
+        notifyTrucks();
+    }
+    else
     {
-        std::cout<<"!!!!WORK HARDER!!!!"<<std::endl;
+        std::cout << "!!!!WORK HARDER!!!!" << std::endl;
     }
 }
 
-void CropField::displayDetails(CropField *field)
+void CropField::displayDetails()
 {
-    std::cout<<"CROPFIELD DATA : "<<std::endl;
-    std::cout<<field->getCropType()<<"\t"<<
-    field->getLocation()<<"\t"<<
-    field->getUnitID()<<"\t"<<
-    field->getEnergyConsumption()<<"\t"<<
-    field->getYield()<<"\t "<<
-    field->getTotalCapacity()<<"\t"<<
-    field->getSoilStateName()<<std::endl;
+    std::cout << "CropField: " << cropType << "\t" << location << "\t" << unitID << "\t" << energyConsumption << "\t" << yield << "\t " << totalCapacity << "\t" << getSoilStateName() << std::endl;
 }
+
 string CropField::getName()
 {
     return "CropField: " + cropType + " at " + location;
+}
+
+// notifications overrides
+void CropField::addTruck(Truck *trk)
+{
+    trucks.push_back(trk);
+    std::cout << "TRUCK ADDED TO: " << cropType << std::endl;
+}
+
+void CropField::removeTruck(Truck *trk)
+{
+    trucks.erase(std::remove(trucks.begin(), trucks.end(), trk), trucks.end());
+    std::cout << "TRUCK REMOVED FROM : " << cropType << std::endl;
+}
+
+void CropField::notifyTrucks()
+{
+    for (Truck *truck : trucks)
+    {
+        truck->callTruck();
+    }
+}
+
+void CropField::notifyTruck(Truck *specificTruck)
+{
+    auto it = std::find(trucks.begin(), trucks.end(), specificTruck);
+    if (it != trucks.end())
+    {
+        specificTruck->callTruck();
+    }
+    else
+    {
+        std::cout << "! TRUCK NOT IN NOTIFICATIONS !" << std::endl;
+    }
+}
+
+size_t CropField::getCount() const
+{
+    return trucks.size();
+}
+
+Truck *CropField::buyTruck(const std::string &truckType, int threshold, int id, int capacity)
+{
+    Truck *boughTruck = TruckFactory::createTruck(truckType, this, threshold, id, capacity);
+    if (boughTruck)
+    {
+        addTruck(boughTruck);
+
+        std::cout << truckType << " with ID " << id << " has been purchased for field: " << getCropType() << std::endl;
+        return boughTruck;
+    }
+    else
+    {
+        std::cout << " !TRUCK TYPE INVALID/FAILED TO CREATE TRUCK! " << truckType << std::endl;
+    }
+}
+
+void CropField::sellTruck()
+{
+    Truck *sellT = NULL;
+    for (auto &truck : trucks)
+    {
+        DeliveryTruck *delTruck = dynamic_cast<DeliveryTruck *>(truck);
+        FertilizerTruck *ferTruck = dynamic_cast<FertilizerTruck *>(truck);
+
+        if (delTruck && delTruck->getCallCounter() == 0)
+        {
+            sellT = delTruck;
+            break;
+        }
+
+        if (ferTruck && ferTruck->getCallCounter() == 0)
+        {
+            sellT = ferTruck;
+            break;
+        }
+    }
+
+    if (sellT)
+    {
+        removeTruck(sellT);
+        std::cout << "Truck with ID " << sellT->getId() << " has been sold." << std::endl;
+        delete sellT;
+    }
+    else
+    {
+        std::cout << "~NO UNUSED TRUCKS 'YEY'~" << std::endl;
+    }
 }

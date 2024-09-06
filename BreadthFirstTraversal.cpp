@@ -1,6 +1,6 @@
 #include "BreadthFirstTraversal.h"
 
-BreadthFirstTraversal::BreadthFirstTraversal(FarmUnit* root) : root(root), curr(nullptr)
+BreadthFirstTraversal::BreadthFirstTraversal(FarmUnit *root) : root(root), curr(NULL)
 {
     que.push(root);
     visited.insert(root);
@@ -8,42 +8,39 @@ BreadthFirstTraversal::BreadthFirstTraversal(FarmUnit* root) : root(root), curr(
 
 BreadthFirstTraversal::~BreadthFirstTraversal()
 {
-    if(!que.empty())
+    if (!que.empty())
     {
         que.pop();
     }
-    //que.clear();
-    //delete root;
-    //delete curr;
 }
 
 FarmUnit *BreadthFirstTraversal::firstFarm()
 {
-    if(!que.empty())
+    if (!que.empty())
     {
         curr = que.front();
-        return  curr;
+        return curr;
     }
-    return  nullptr;
+    return NULL;
 }
 
 FarmUnit *BreadthFirstTraversal::next()
 {
-    if(!que.empty())
+    if (!que.empty())
     {
         curr = que.front();
         que.pop();
 
-            if(curr == nullptr)
-            {
-                return nullptr;
-            }
-        CompositeFarm* ptr =  dynamic_cast<CompositeFarm*>(curr);
-        if(ptr != nullptr)
+        if (curr == NULL)
         {
-            for(auto& it :  ptr->getFarmUnits())
+            return NULL;
+        }
+        CompositeFarm *farm = dynamic_cast<CompositeFarm *>(curr);
+        if (farm != NULL)
+        {
+            for (auto &it : farm->getFarmUnits())
             {
-                if(it != nullptr && visited.find(it) == visited.end())
+                if (it != NULL && visited.find(it) == visited.end())
                 {
                     que.push(it);
                     visited.insert(it);
@@ -52,7 +49,7 @@ FarmUnit *BreadthFirstTraversal::next()
         }
         return curr;
     }
-    return nullptr;
+    return NULL;
 }
 
 bool BreadthFirstTraversal::isDone()

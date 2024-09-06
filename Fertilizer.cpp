@@ -1,8 +1,7 @@
 #include "Fertilizer.h"
-#include "FruitfulSoil.h"
 
 Fertilizer::Fertilizer(CropField *cropField)
-    : CropField(cropField->getCropType(), cropField->getTotalCapacity(), cropField->getUnitID(), cropField->getLocation(), cropField->getEnergyConsumption(),cropField->getYield()), cropField(cropField) {}
+    : CropField(cropField->getCropType(), cropField->getTotalCapacity(), cropField->getUnitID(), cropField->getLocation(), cropField->getEnergyConsumption(), cropField->getYield()), cropField(cropField) {}
 
 int Fertilizer::getTotalCapacity()
 {

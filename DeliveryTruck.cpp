@@ -1,56 +1,39 @@
 #include "DeliveryTruck.h"
+#include "CropField.h"
 
-#include <iostream>
-
-DeliveryTruck::DeliveryTruck(CropField *field,int threshold,int id,int cap):Truck(field,threshold,id,capacity)
+DeliveryTruck::DeliveryTruck(CropField *field, int threshold, int id, int cap) : Truck(field, threshold, id, capacity)
 {
     this->field = field;
     this->id = id;
-    called = 0;
-
 }
 
-DeliveryTruck::~DeliveryTruck()
-{
-    
-}
+DeliveryTruck::~DeliveryTruck() {}
 
 void DeliveryTruck::callTruck()
 {
-    std::cout<<"CALLED THE DELIVERY TRUCK"<<std::endl;
-    called++;
+    std::cout << "\t -" << "CALLED THE DELIVERY TRUCK" << std::endl;
+    callCounter++;
     startEngine();
 }
 
-
 void DeliveryTruck::startEngine()
 {
-    std::cout<<"STARTING ENGINE"<<std::endl;
-    //go collect the crops
+    std::cout << "STARTING ENGINE" << std::endl;
     int yield = field->getYield();
-    if(yield >= 100)
+
+    if (yield >= 100)
     {
-    yield -= 100;
-    field->setYield(yield);
-    std::cout<<"CROPS COLLECTED!"<<std::endl;
+        yield -= 100;
+        field->setYield(yield);
+        std::cout << "*CROPS COLLECTED!*" << std::endl;
     }
     else
     {
-        std::cout<<"NOT ENOUGH CROPS TO COLLECT"<<std::endl;
+        std::cout << "NOT ENOUGH CROPS TO COLLECT WORK HARDER" << std::endl;
     }
-
 }
 
-int DeliveryTruck::getId()
+int DeliveryTruck::getCallCounter() const
 {
-    return this->id ;
+    return callCounter;
 }
-
-int DeliveryTruck::getCallCounter()
-{
-    return this->called;
-}
-// std::string DeliveryTruck::getType() const
-// {
-//     return "DeliveryTruck";
-// }
