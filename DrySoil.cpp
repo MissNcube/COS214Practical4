@@ -5,8 +5,16 @@ int DrySoil::harvestCrops(CropField *crop)
 {
     std::cout << "Minimal yield due to dry soil." << std::endl;
     int yield = crop->getYield();
+     if(yield ==0 )
+    {
+        yield = 10;
+        crop->setYield(yield);
+        crop->setSoilState(new DrySoil());
+        return yield;
+    }
     yield *= 1;
     crop->setYield(yield);
+    crop->setSoilState(new DrySoil());
     return yield;
 }
 

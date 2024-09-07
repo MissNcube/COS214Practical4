@@ -51,3 +51,9 @@ int Fertilizer::harvest()
 {
     return cropField->harvestCrops(cropField);
 }
+
+void Fertilizer::display()
+{
+    std::cout<<"FERTILIZING :"<<std::endl;
+    std::cout<< getCropType() << "\t" << getLocation() << "\t" << getUnitID()<< "\t" << getEnergyConsumption() << "\t" << getYield() << "\t " << getTotalCapacity() << "\t" << getSoilStateName() << std::endl;
+}

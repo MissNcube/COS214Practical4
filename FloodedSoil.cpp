@@ -7,6 +7,7 @@ int FloodedSoil::harvestCrops(CropField *crop)
     int yield = crop->getYield();
     yield *= 0;
     crop->setYield(yield);
+    crop->setSoilState(new FloodedSoil());
     return yield;
 }
 

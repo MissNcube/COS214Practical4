@@ -79,6 +79,7 @@ SoilState *CropField::getSoilState()
 
 void CropField::rain(CropField *field, double rainAmt)
 {
+    
     soilState->rain(field, rainAmt);
 }
 
@@ -183,6 +184,7 @@ Truck *CropField::buyTruck(const std::string &truckType, int threshold, int id, 
     {
         std::cout << " !TRUCK TYPE INVALID/FAILED TO CREATE TRUCK! " << truckType << std::endl;
     }
+    
 }
 
 void CropField::sellTruck()

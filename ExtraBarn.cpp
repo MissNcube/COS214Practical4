@@ -28,3 +28,9 @@ int ExtraBarn::getYield()
 {
     return cropField->getYield();
 }
+
+void ExtraBarn::print()
+{
+    std::cout<<"EXTRA BARN DETAILS: "<<std::endl;
+    std::cout<<"Left over Capacity: "<<getLeftoverCapacity()<<"\t "<<"Total Capacity: "<<getTotalCapacity()<<"\t"<<"Yield: "<<getYield()<<"\t"<<"Affected: "<<getName()<<std::endl;
+}

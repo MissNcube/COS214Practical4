@@ -21,6 +21,7 @@ public:
     void updateSensorData(string sensor, double value) override;
     void increaseProduction();
     int harvest();
+    void  display();
 };
 
 #endif

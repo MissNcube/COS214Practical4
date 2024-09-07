@@ -5,6 +5,8 @@ DeliveryTruck::DeliveryTruck(CropField *field, int threshold, int id, int cap) :
 {
     this->field = field;
     this->id = id;
+    this->threshold = threshold;
+    this->capacity = capacity;
 }
 
 DeliveryTruck::~DeliveryTruck() {}

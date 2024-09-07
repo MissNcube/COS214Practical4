@@ -17,7 +17,7 @@ public:
     int getTotalCapacity() override;
     int getYield() override;
 
-
+    void print();
 };
 
 #endif

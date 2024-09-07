@@ -7,6 +7,7 @@ int FruitfulSoil::harvestCrops(CropField *crop)
     int yield = crop->getYield();
     yield *= 3;
     crop->setYield(yield);
+    crop->setSoilState(new FruitfulSoil());
     return yield;
 }
 

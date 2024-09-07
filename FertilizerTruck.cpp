@@ -5,6 +5,7 @@ FertilizerTruck::FertilizerTruck(CropField *field, int threshold, int id, int ca
 {
     this->field = field;
     this->id = id;
+    this->capacity = cap;
 }
 
 FertilizerTruck::~FertilizerTruck()
