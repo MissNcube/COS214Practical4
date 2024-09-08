@@ -5,6 +5,8 @@
 
 class FertilizerTruck : public Truck
 {
+
+    
 public:
     FertilizerTruck(CropField* field, int threshold, int id, int capacity);
     ~FertilizerTruck();
