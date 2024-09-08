@@ -183,6 +183,7 @@ Truck *CropField::buyTruck(const std::string &truckType, int threshold, int id, 
     {
         std::cout << " !TRUCK TYPE INVALID/FAILED TO CREATE TRUCK! " << truckType << std::endl;
     }
+    return nullptr;
 }
 
 void CropField::sellTruck()

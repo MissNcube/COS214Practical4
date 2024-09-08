@@ -11,6 +11,11 @@
 #include "FarmTraversal.h"
 #include "DepthFirstTraversal.h"
 #include "BreadthFirstTraversal.h"
+#include "DrySoil.h"
+#include "FruitfulSoil.h"
+#include "Notifications.h"
+#include "Truck.h"
+
 
 void testComponent1();
 void testComponent2();
@@ -22,12 +27,12 @@ void testAll();
 int main()
 {
 
-     testComponent1();
-    // testComponent2();
-    // testComponent3();
-    //testComponent4();
-    //  testComponent5();
-    // testAll();
+    testComponent1();
+    testComponent2();
+    testComponent3();
+    testComponent4();
+    testComponent5();
+    testAll();
     return 0;
 }
 
@@ -41,7 +46,7 @@ void testComponent1()
     std::cout<<"Increased the pest control sensor to : " << cornField->getSensorData("Pest Control(sPs/ml)")<<std::endl;
 
 
-    CropField *wheatField = new CropField("Wheat", 150, "CF002", "Field 2", 15.0, 30);
+    CropField *wheatField = new CropField("Wheat", 150, "CF002", "Field 2", 15.0, 40);
     std::cout << "+++++++++++++++++++WheatField DATA+++++++++++++++++++++" << std::endl;
     wheatField->displayDetails();
     wheatField->updateSensorData("Moisture Level(%)", 70);
@@ -120,22 +125,22 @@ void testComponent2()
 
 void testComponent3()
 {
-    CropField *tomatoes = new CropField("Tomatoes", 1000, "Field1", "North", 200, 50);
+    CropField *cornField = new CropField("Tomatoes", 1000, "Field1", "North", 200, 50);
     CropField *potatoes = new CropField("Potato", 900, "CFT8", "Section6", 150, 50);
     CompositeFarm *farm1 = new CompositeFarm("OpenLand", "SpringField", 400);
 
-    Fertilizer *ftl = new Fertilizer(tomatoes);
+    Fertilizer *ftl = new Fertilizer(cornField);
     ftl->increaseProduction();
 
     int yield = ftl->harvest();
     std::cout << "Increased Yield: " << yield << std::endl;
 
-    ExtraBarn *barn = new ExtraBarn(tomatoes, 50);
+    ExtraBarn *barn = new ExtraBarn(cornField, 50);
     barn->add();
     int cap = barn->getLeftoverCapacity();
     std::cout << "Total increased capacity after an extra barn: " << cap << std::endl;
 
-    farm1->addUnit(tomatoes);
+    farm1->addUnit(cornField);
     farm1->addUnit(potatoes);
     std::cout << "++++++++++++++++++++FARM DATA++++++++++++++++++++++ " << std::endl;
     farm1->displayD();
@@ -160,7 +165,7 @@ void testComponent4()
     farm->addUnit(sugarcaneField);
     farm->addUnit(sunflowerField);
     farm->displayD();
-     std::cout << "++++++++++++++++++++++++++++TRUCKS FOR FIELDS++++++++++++++++++++++++++++++++ " << std::endl;
+    std::cout << "++++++++++++++++++++++++++++TRUCKS FOR FIELDS++++++++++++++++++++++++++++++++ " << std::endl;
     std::cout << "=== Buying Trucks ===" << std::endl;
     Truck * truck =  wheatField->buyTruck("DeliveryTruck", 100, 1, 200);
     DeliveryTruck* dtk = dynamic_cast<DeliveryTruck*>(truck);
@@ -235,38 +240,6 @@ void testComponent4()
     farm->updateSensorData("Temperature" , 50.60);
     std::cout<<"Updating the temperature sensors of the farm  to : "<<farm->getSensorData("Temperature")<<std::endl;
 
-
-
-    
-
-
-    
-
-
-
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
 }
 
 void testComponent5()
@@ -320,5 +293,5 @@ void testComponent5()
 
 void testAll()
 {
-
+    
 }
