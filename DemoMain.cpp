@@ -124,7 +124,9 @@ int main()
     std::cout << GREEN << "Fruitful Soil has generated the following yield this season : " << yield << " units of crops harvested. :) \n" << RESET;
     cout << endl<< endl;
 
-
+    wheatField->rain(wheatField, 26);
+    std::cout<<RED << "After MORE RAIN, state of the soil has changed to : " << wheatField->getSoilStateName() << RESET <<std::endl;
+    cout << endl<< endl;
 
     // Step 4: Truck Operations
     typewriterEffect(CYAN "++++++++++++++++++++++++++++TRUCKS FOR FIELDS++++++++++++++++++++++++++++++++ ", 40);
@@ -186,6 +188,10 @@ int main()
     mainFarm->removeTruck(ftk2);cout<<endl;
     std::cout<<"Total Trucks in Farm: "<<mainFarm->getTruckCount()<<std::endl;
 
+    typewriterEffect( GREEN UNDERLINE "\n=== DISPLAYING DETAILS OF OUR FARMS :===\n", 40);cout << RESET <<endl;
+    riceField->displayDetails();
+    wheatField->displayDetails();
+    maizeField->displayDetails();
    
     
 //=====================================================================================
@@ -226,7 +232,11 @@ int main()
     typewriterEffect( RED  "\n+++++++++++++THANK YOU, COME AGAIN +++++++++++++\n", 40);
     cout <<RESET<<endl;
 
+    typewriterEffect( BOLD "\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF", 50);
+    cout <<RESET<<endl;
+    cout << endl;
+
     // Clean up dynamically allocated memory
-    delete mainFarm;  // Deleting the composite farm will delete all crop fields
+    delete mainFarm;
     return 0;
 }
