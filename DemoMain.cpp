@@ -107,7 +107,16 @@ int main()
             cout << GREEN << "\u25CF" << current->getName() << std::endl;
         }
     }
-    cout << RESET << endl;
+    cout << endl;
+
+    cornField->displayDetails();
+    wheatField->displayDetails();
+    soybeanField->displayDetails();
+    riceField->displayDetails();
+    maizeField->displayDetails();
+    cout<<endl<<endl;
+    mainFarm->displayD();
+    cout <<RESET<<endl;
 
     // Step 3: Soil State Transitions & Harvesting
     printHeader("----------- LETS SEE THE SOIL CONDITIONS ----------");
@@ -267,7 +276,7 @@ int main()
             cout << BLUE << "\u25CF" << current->getName() << std::endl;
         }
     }
-    cout << RESET << endl;
+    cout  << RESET <<endl;
 
     typewriterEffect( RED  "\n+++++++++++++THANK YOU, COME AGAIN +++++++++++++\n", 40);
     cout <<RESET<<endl;
