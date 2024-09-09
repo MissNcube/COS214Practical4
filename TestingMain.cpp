@@ -11,11 +11,6 @@
 #include "FarmTraversal.h"
 #include "DepthFirstTraversal.h"
 #include "BreadthFirstTraversal.h"
-#include "DrySoil.h"
-#include "FruitfulSoil.h"
-#include "Notifications.h"
-#include "Truck.h"
-
 
 void testComponent1();
 void testComponent2();
@@ -44,7 +39,7 @@ void testComponent1()
     cornField->updateSensorData("Pest Control(sPs/ml)", 880);
     std::cout << "Increased the pest control sensor to : " << cornField->getSensorData("Pest Control(sPs/ml)") << std::endl;
 
-    CropField *wheatField = new CropField("Wheat", 150, "CF002", "Field 2", 15.0, 40);
+    CropField *wheatField = new CropField("Wheat", 150, "CF002", "Field 2", 15.0, 30);
     std::cout << "+++++++++++++++++++WheatField DATA+++++++++++++++++++++" << std::endl;
     wheatField->displayDetails();
     wheatField->updateSensorData("Moisture Level(%)", 70);
@@ -150,11 +145,23 @@ void testComponent2()
 
 void testComponent3()
 {
-    CropField *cornField = new CropField("Tomatoes", 1000, "Field1", "North", 200, 50);
+    CropField *tomatoes = new CropField("Tomatoes", 1000, "Field1", "North", 200, 50);
     CropField *potatoes = new CropField("Potato", 900, "CFT8", "Section6", 150, 50);
     CompositeFarm *farm1 = new CompositeFarm("OpenLand", "SpringField", 400);
-
+    std::cout << "++++++++++++++++++++FERTLIZER++++++++++++++++++++++ " << std::endl;
     Fertilizer *ftl = new Fertilizer(tomatoes);
+    ftl->display();
+    Fertilizer *ftl2 = new Fertilizer(potatoes);
+    ftl2->display();
+    std::cout << "\n";
+    ftl->updateSensorData("Temperature", 28.0);
+    std::cout << "Sensor updated is Temperature to " << ftl->getSensorData("Temperature") << " for " << ftl->getCropType() << std::endl;
+
+    ftl2->updateSensorData("Temperature", 25.0);
+    std::cout << "Sensor updated is Temperature to " << ftl2->getSensorData("Temperature") << " for " << ftl2->getCropType() << std::endl;
+
+    std::cout << "\n=== INCREASE PRODUCTION===" << std::endl;
+
     ftl->increaseProduction();
     ftl2->increaseProduction();
 
@@ -164,13 +171,23 @@ void testComponent3()
     std::cout << "Increased Yield  of Tomatoes: " << yield << std::endl;
     std::cout << "Increased Yield of Potatoes: " << t << std::endl;
 
+    std::cout << "++++++++++++++++++++EXTRA BARN+++++++++++++++++++++ " << std::endl;
     ExtraBarn *barn = new ExtraBarn(tomatoes, 50);
+    ExtraBarn *barn2 = new ExtraBarn(potatoes, 70);
+    std::cout << "\n===Adding to Barn===" << std::endl;
     barn->add();
     barn2->add();
 
     int cap = barn->getLeftoverCapacity();
-    std::cout << "Total increased capacity after an extra barn: " << cap << std::endl;
+    int cap2 = barn->getLeftoverCapacity();
 
+    std::cout << "Total increased capacity of Tomatoes after an extra barn: " << cap << std::endl;
+    barn->print();
+
+    std::cout << "Total increased capacity of Potatoes after an extra barn: " << cap2 << std::endl;
+    barn2->print();
+
+    std::cout << "++++++++++++++++++++FARM DATA++++++++++++++++++++++ " << std::endl;
     farm1->addUnit(tomatoes);
     farm1->addUnit(potatoes);
     farm1->displayD();
@@ -268,45 +285,20 @@ void testComponent4()
     farm->addTruck(ftk);
     farm->addTruck(ftk2);
     farm->addTruck(dtk2);
-     std::cout << "\n===Removing some trucks from the farm:===" << std::endl;
-     farm->removeTruck(dtk);
-     farm->removeTruck(ftk2);
-     std::cout<<"Total Trucks in Farm: "<<farm->getTruckCount()<<std::endl;
-    farm->updateSensorData("Temperature" , 50.60);
-    std::cout<<"Updating the temperature sensors of the farm  to : "<<farm->getSensorData("Temperature")<<std::endl;
+    std::cout << "\n===Removing some trucks from the farm:===" << std::endl;
+    farm->removeTruck(dtk);
+    farm->removeTruck(ftk2);
+    std::cout << "Total Trucks in Farm: " << farm->getTruckCount() << std::endl;
+    farm->updateSensorData("Temperature", 50.60);
+    std::cout << "Updating the temperature sensors of the farm  to : " << farm->getSensorData("Temperature") << std::endl;
 
-
-
-    
-
-
-    
 
 
 
    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
+    delete truck3;
+    delete truck2;   
+    delete truck;  
 }
 
 void testComponent5()
@@ -354,11 +346,6 @@ void testComponent5()
         }
     }
 
-    // Clean up dynamically allocated memory
-    delete mainFarm; // This should recursively delete the other farm units
-}
-
-void testAll()
-{
-
+    delete mainFarm;
+   
 }
