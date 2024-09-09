@@ -2,35 +2,40 @@
 CXX = g++
 CXXFLAGS = -std=c++11 -g -Wall -Wextra -pedantic 
 
-# Define the target executable
-TARGET = main
+# Define the targets for the different mains
+TARGET_DEMO = demo
+TARGET_TEST = test
 
-# Find all .cpp files and convert them to .o files
-SRCS = $(wildcard *.cpp)
-OBJS = $(SRCS:.cpp=.o)
+# Find all .cpp files except the main files
+SRCS = $(filter-out DemoMain.cpp TestingMain.cpp, $(wildcard *.cpp))
 
-# Default target
-all: $(TARGET)
+# Object files for each target
+DEMO_OBJS = $(SRCS:.cpp=.o) DemoMain.o
+TEST_OBJS = $(SRCS:.cpp=.o) TestingMain.o
 
-# Link the object files to create the executable
-$(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
+# Default target (for 'make run')
+run: $(TARGET_TEST)
+	./$(TARGET_TEST)
+
+# Target for TestingMain (default run)
+$(TARGET_TEST): $(TEST_OBJS)
+	$(CXX) $(CXXFLAGS) -o $(TARGET_TEST) $(TEST_OBJS)
+
+# Target for DemoMain (for 'make run_demo')
+$(TARGET_DEMO): $(DEMO_OBJS)
+	$(CXX) $(CXXFLAGS) -o $(TARGET_DEMO) $(DEMO_OBJS)
+
+# Run the demo target
+run_demo: $(TARGET_DEMO)
+	./$(TARGET_DEMO)
 
 # Compile the source files into object files
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Run with valgrind
-run: $(TARGET)
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(TARGET) 2> valgrind_log.txt
-
-# Run with gdb
-debug: $(TARGET)
-	gdb -ex run --args ./$(TARGET) 2>&1 | tee gdb_log.txt
-
 # Clean up the build files
 clean:
-	rm -f $(OBJS) $(TARGET) valgrind_log.txt gdb_log.txt
+	rm -f $(DEMO_OBJS) $(TEST_OBJS) $(TARGET_DEMO) $(TARGET_TEST)
 
 # Phony targets
-.PHONY: all run debug clean
+.PHONY: all run run_demo clean

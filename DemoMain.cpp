@@ -276,6 +276,14 @@ int main()
             cout << BLUE << "\u25CF" << current->getName() << std::endl;
         }
     }
+    std::cout<<"\n"<<std::endl;
+    cornField->displayDetails();
+    wheatField->displayDetails();
+    soybeanField->displayDetails();
+    riceField->displayDetails();
+    maizeField->displayDetails();
+    cout<<endl<<endl;
+    mainFarm->displayD();
     cout  << RESET <<endl;
 
     typewriterEffect( RED  "\n+++++++++++++THANK YOU, COME AGAIN +++++++++++++\n", 40);
